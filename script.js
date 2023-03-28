@@ -1,6 +1,6 @@
 window.addEventListener("load", function () {
   const canvas = document.getElementById("canvas1");
-  const ctx = canvas.getContext("2d"); // initialize built-in objthat holds all canvas properties and drawing methods
+  const ctx = canvas.getContext("2d"); // initialize built-in obj that holds all canvas properties and drawing methods
   // set canvas size, both element size and surface size (because remember HTMLCanvas has these TWO different sizes), to the same value
   canvas.width = 1280;
   canvas.height = 720;
@@ -12,7 +12,7 @@ window.addEventListener("load", function () {
   ctx.lineWidth = 3;
   ctx.strokeStyle = "white";
 
-  // JS classes are hoisted, but they are not initialized until the line of code is reached. So we can't use them before they are defined.
+  // JS classes are hoisted, but they are not initialized until the line of code is reached. So we can't use them before they aretttr defined.
   // very good idea would be to split our JavaScript into individual modules and Import and Export our classes between files to keep our code organized. But using JS modules would require us to run this code through a local server (npm jhamela), i.e. It wouldn't run the code by simply opening HTML file in the browser anymore😬
 
   class Player {
@@ -72,10 +72,23 @@ window.addEventListener("load", function () {
       // order in which we define classes matters as JS file is read line by line from top to bottom. Hence it is important to define Player class before Game class
       this.player = new Player(this);
 
+      this.mouse = {
+        x: this.width * 0.5,
+        y: this.height * 0.5,
+        pressed: false,
+      };
+
       // event listeners
       // call back function on event listener auto generates an event object that contains all kind of infomration about the event that just happened. We can access this event object by passing it as an argument to the callback function.
-      window.addEventListener("mousedown", function (event) {
-        console.log(event.target);
+      // we can also add the event listener just to the canvas element itself rather than the entire browser window object.
+      //   window.addEventListener("mousedown", function (event) {
+      canvas.addEventListener("mousedown", function (event) {
+        // console.log(event.target); // tells which HTML element was clicked
+        // console.log(event); // contains a lot of information about the event, i.e, mouseclick, e.g. X and Y coordinates of the mouse click, which mouse button was pressed, etc.
+        // take the coordinates of the click and save them as properties on the main game object. From here we will be able to access them from our player object as well. Hence we create the new game property, i.e. this.mouse
+        // console.log(event.x, event.y);
+        // the problem is that these coordinates are from the top left of the window. We need to convert them to the coordinates of the canvas. We can do this by using offsetX, it will give us horizontal coordinate of the click on the target node. In our case the target node the of the click is canvas element.
+        console.log(event.offsetX, event.offsetY);
       });
     }
 
